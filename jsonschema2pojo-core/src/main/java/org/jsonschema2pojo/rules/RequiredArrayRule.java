@@ -23,9 +23,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Schema;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.sun.codemodel.JClass;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JDocComment;
 import com.sun.codemodel.JDocCommentable;
@@ -77,6 +80,7 @@ public class RequiredArrayRule implements Rule<JDefinedClass, JDefinedClass> {
             }
 
             addJavaDoc(field);
+            addIncludeAlways(field);
 
             if (ruleFactory.getGenerationConfig().isIncludeJsr303Annotations()) {
                 addNotNullAnnotation(field);
@@ -119,6 +123,10 @@ public class RequiredArrayRule implements Rule<JDefinedClass, JDefinedClass> {
     private void addJavaDoc(JDocCommentable docCommentable) {
         JDocComment javadoc = docCommentable.javadoc();
         javadoc.append(REQUIRED_COMMENT_TEXT);
+    }
+
+    private void addIncludeAlways(JFieldVar field) {
+        field.annotate(JsonInclude.class).param("value", JsonInclude.Include.ALWAYS);
     }
 
     private String getSetterName(String propertyName, JsonNode node) {
