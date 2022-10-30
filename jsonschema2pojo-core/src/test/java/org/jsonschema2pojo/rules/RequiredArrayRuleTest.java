@@ -23,6 +23,7 @@ import static org.mockito.Mockito.*;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Schema;
@@ -30,6 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.sun.codemodel.JAnnotationUse;
@@ -102,8 +104,10 @@ public class RequiredArrayRuleTest {
         Collection<JAnnotationUse> fooBarAnnotations = jclass.fields().get("fooBar").annotations();
         Collection<JAnnotationUse> fooAnnotations = jclass.fields().get("foo").annotations();
 
-        assertThat(fooBarAnnotations.size(), is(1));
-        assertThat(fooBarAnnotations.iterator().next().getAnnotationClass().name(), is(notNullClass.getSimpleName()));
+        assertThat(fooBarAnnotations.size(), is(2));
+        Iterator<JAnnotationUse> fooBarAnnotationsIt = fooBarAnnotations.iterator();
+        assertThat(fooBarAnnotationsIt.next().getAnnotationClass().name(), is(JsonInclude.class.getSimpleName()));
+        assertThat(fooBarAnnotationsIt.next().getAnnotationClass().name(), is(notNullClass.getSimpleName()));
 
         assertThat(fooAnnotations.size(), is(0));
     }
