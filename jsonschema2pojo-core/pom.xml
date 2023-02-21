@@ -2,6 +2,18 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+  <!-- mvn deploy - -projects=jsonschema2pojo-core -->
+  <distributionManagement>
+    <snapshotRepository>
+      <id>gitlocal</id>
+      <url>file://${maven.multiModuleProjectDirectory}/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>gitlocal</id>
+      <url>file://${maven.multiModuleProjectDirectory}/releases</url>
+    </repository>
+  </distributionManagement>
+
     <parent>
         <artifactId>jsonschema2pojo</artifactId>
         <groupId>org.jsonschema2pojo</groupId>
